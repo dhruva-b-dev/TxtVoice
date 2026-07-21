@@ -1,0 +1,1 @@
+LexiVocal is an offline-first Android application designed for real-time speech-to-text and text-to-speech communication to assist deaf and mute individuals.
