@@ -1,7 +1,7 @@
-package com.dhruva.txtvoice.ui.speak
+package com.dhruva.txtvoice.features.speak
 
 import androidx.lifecycle.ViewModel
-import com.dhruva.txtvoice.data.VoiceManager
+import com.dhruva.txtvoice.core.speech.VoiceManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

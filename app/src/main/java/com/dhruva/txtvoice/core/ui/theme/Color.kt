@@ -1,4 +1,4 @@
-package com.dhruva.txtvoice.ui.theme
+package com.dhruva.txtvoice.core.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

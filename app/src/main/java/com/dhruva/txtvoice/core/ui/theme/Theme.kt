@@ -1,4 +1,4 @@
-package com.dhruva.txtvoice.ui.theme
+package com.dhruva.txtvoice.core.ui.theme
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -39,9 +39,7 @@ private val LightColorScheme = lightColorScheme(
 
 @Composable
 fun TxtVoiceTheme(
-    darkTheme: Boolean = true,//isSystemInDarkTheme(), as of now, we're not providing support for light theme
-    // Dynamic color is available on Android 12+
-    // Disabled by default to maintain the specific brand identity from the image
+    darkTheme: Boolean = true,
     dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {

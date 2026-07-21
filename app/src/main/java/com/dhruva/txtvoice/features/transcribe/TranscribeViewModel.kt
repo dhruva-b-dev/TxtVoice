@@ -1,7 +1,7 @@
-package com.dhruva.txtvoice.ui.homeTranscribe
+package com.dhruva.txtvoice.features.transcribe
 
 import androidx.lifecycle.ViewModel
-import com.dhruva.txtvoice.data.VoiceManager
+import com.dhruva.txtvoice.core.speech.VoiceManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

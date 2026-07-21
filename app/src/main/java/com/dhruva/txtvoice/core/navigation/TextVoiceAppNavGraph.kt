@@ -1,4 +1,4 @@
-package com.dhruva.txtvoice.ui.navigation
+package com.dhruva.txtvoice.core.navigation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
@@ -32,12 +32,10 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.ui.NavDisplay
-import com.dhruva.txtvoice.ui.history.HistoryScreen
-import com.dhruva.txtvoice.ui.homeTranscribe.HomeTranscribeScreen
-import com.dhruva.txtvoice.ui.settings.SettingsScreen
-import com.dhruva.txtvoice.ui.speak.SpeakScreen
-import com.dhruva.txtvoice.ui.theme.DarkBackground
-import com.dhruva.txtvoice.ui.theme.DarkSurfaceVariant
+import com.dhruva.txtvoice.core.ui.theme.DarkBackground
+import com.dhruva.txtvoice.core.ui.theme.DarkSurfaceVariant
+import com.dhruva.txtvoice.features.speak.SpeakScreen
+import com.dhruva.txtvoice.features.transcribe.HomeTranscribeScreen
 import kotlinx.serialization.serializer
 
 @Composable

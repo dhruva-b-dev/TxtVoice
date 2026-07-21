@@ -1,4 +1,4 @@
-package com.dhruva.txtvoice.ui.navigation
+package com.dhruva.txtvoice.core.navigation
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes

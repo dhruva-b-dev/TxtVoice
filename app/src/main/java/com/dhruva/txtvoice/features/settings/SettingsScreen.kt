@@ -1,5 +1,6 @@
-package com.dhruva.txtvoice.ui.settings
+package com.dhruva.txtvoice.features.settings
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -46,12 +47,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.dhruva.txtvoice.R
-import com.dhruva.txtvoice.ui.theme.DarkBackground
-import com.dhruva.txtvoice.ui.theme.DarkGray
-import com.dhruva.txtvoice.ui.theme.DarkSurface
-import com.dhruva.txtvoice.ui.theme.LightGray
-import com.dhruva.txtvoice.ui.theme.TxtVoiceTheme
-import com.dhruva.txtvoice.ui.theme.YellowPrimary
+import com.dhruva.txtvoice.core.ui.theme.DarkBackground
+import com.dhruva.txtvoice.core.ui.theme.YellowPrimary
+import com.dhruva.txtvoice.core.ui.theme.DarkGray
+import com.dhruva.txtvoice.core.ui.theme.DarkSurface
+import com.dhruva.txtvoice.core.ui.theme.LightGray
+import com.dhruva.txtvoice.core.ui.theme.TxtVoiceTheme
 
 @Composable
 fun SettingsScreen(modifier: Modifier = Modifier) {
@@ -207,7 +208,7 @@ fun VoiceSelectionCard() {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = Color(0xFF101217)),
-        border = androidx.compose.foundation.BorderStroke(1.dp, Color(0xFF24292F)),
+        border = BorderStroke(1.dp, Color(0xFF24292F)),
         shape = RoundedCornerShape(8.dp)
     ) {
         Row(

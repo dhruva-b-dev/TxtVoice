@@ -1,4 +1,4 @@
-package com.dhruva.txtvoice.ui.history
+package com.dhruva.txtvoice.features.history
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -43,13 +43,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.dhruva.txtvoice.R
-import com.dhruva.txtvoice.ui.theme.DarkBackground
-import com.dhruva.txtvoice.ui.theme.DarkGray
-import com.dhruva.txtvoice.ui.theme.DarkSurface
-import com.dhruva.txtvoice.ui.theme.LightGray
-import com.dhruva.txtvoice.ui.theme.TxtVoiceTheme
-import com.dhruva.txtvoice.ui.theme.YellowBorder
-import com.dhruva.txtvoice.ui.theme.YellowPrimary
+import com.dhruva.txtvoice.core.ui.theme.DarkBackground
+import com.dhruva.txtvoice.core.ui.theme.DarkGray
+import com.dhruva.txtvoice.core.ui.theme.DarkSurface
+import com.dhruva.txtvoice.core.ui.theme.LightGray
+import com.dhruva.txtvoice.core.ui.theme.TxtVoiceTheme
+import com.dhruva.txtvoice.core.ui.theme.YellowBorder
+import com.dhruva.txtvoice.core.ui.theme.YellowPrimary
 
 @Composable
 fun HistoryScreen(modifier: Modifier = Modifier) {

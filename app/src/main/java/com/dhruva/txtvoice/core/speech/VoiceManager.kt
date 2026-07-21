@@ -1,4 +1,4 @@
-package com.dhruva.txtvoice.data
+package com.dhruva.txtvoice.core.speech
 
 import android.content.Context
 import android.content.Intent

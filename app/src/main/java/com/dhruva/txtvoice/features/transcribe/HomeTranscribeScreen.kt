@@ -1,4 +1,4 @@
-package com.dhruva.txtvoice.ui.homeTranscribe
+package com.dhruva.txtvoice.features.transcribe
 
 import android.Manifest
 import android.content.pm.PackageManager
@@ -48,15 +48,15 @@ import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.dhruva.txtvoice.R
-import com.dhruva.txtvoice.ui.components.CommonBlackButton
-import com.dhruva.txtvoice.ui.components.CommonYellowButton
-import com.dhruva.txtvoice.ui.theme.DarkBackground
-import com.dhruva.txtvoice.ui.theme.DarkGray
-import com.dhruva.txtvoice.ui.theme.LightGray
-import com.dhruva.txtvoice.ui.theme.Mustard
-import com.dhruva.txtvoice.ui.theme.TxtVoiceTheme
-import com.dhruva.txtvoice.ui.theme.YellowBorder
-import com.dhruva.txtvoice.ui.theme.YellowPrimary
+import com.dhruva.txtvoice.core.ui.components.CommonBlackButton
+import com.dhruva.txtvoice.core.ui.components.CommonYellowButton
+import com.dhruva.txtvoice.core.ui.theme.DarkBackground
+import com.dhruva.txtvoice.core.ui.theme.DarkGray
+import com.dhruva.txtvoice.core.ui.theme.LightGray
+import com.dhruva.txtvoice.core.ui.theme.Mustard
+import com.dhruva.txtvoice.core.ui.theme.TxtVoiceTheme
+import com.dhruva.txtvoice.core.ui.theme.YellowBorder
+import com.dhruva.txtvoice.core.ui.theme.YellowPrimary
 
 @Composable
 fun HomeTranscribeScreen(
@@ -149,7 +149,7 @@ fun HomeTranscribeScreen(
             contentAlignment = Alignment.Center
         ) {
             OutlinedTextField(
-                value = transcribedText,
+                value = transcribedText.ifEmpty { stringResource(R.string.transcribe_default_val) },
                 onValueChange = {},
                 label = { Text("") },
                 modifier = Modifier.fillMaxWidth(),
