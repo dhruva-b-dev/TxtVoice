@@ -36,7 +36,7 @@ TxtVoice is an Android accessibility and communication application that provides
 
 ### Full Demo Video (with Audio)
 
-[▶ Watch Demo Video](https://github.com/dhruva-b-dev/TxtVoice/blob/main/demo/txtvoice-demo.mp4)
+[▶ Watch Demo Video](https://github.com/dhruva-b-dev/TxtVoice/blob/master/demo/txtvoice-demo.mp4)
 
 ---
 
@@ -132,8 +132,8 @@ The application focuses on accessibility, communication assistance, and real-tim
 | Quick Phrases | ✅ |
 | Real-time Transcription | ✅ |
 | Pause / Resume Listening | ✅ |
-| History Screen | ✅ |
-| Settings Screen | ✅ |
+| History Screen | 📋 Planned |
+| Settings Screen | 📋 Planned |
 | Multi-language Support | 📋 Planned |
 | Export Transcript | 📋 Planned |
 | Offline Recognition | 📋 Planned |
