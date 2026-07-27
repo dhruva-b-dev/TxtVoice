@@ -287,6 +287,12 @@ Senior Android Developer | Kotlin | Jetpack Compose | Android
 GitHub:  
 https://github.com/dhruva-b-dev
 
+LinkedIn: 
+https://www.linkedin.com/in/dhruvabhatt2004
+
+Medium: 
+https://medium.com/@dhruva.bhatt.dev 
+
 ---
 
 ⭐ If you found this project useful, consider giving it a star.
