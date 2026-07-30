@@ -36,9 +36,9 @@ import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalLocale
 import androidx.compose.ui.res.stringResource
@@ -47,11 +47,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.dhruva.txtvoice.R
-import com.dhruva.txtvoice.core.ui.theme.DarkBackground
-import com.dhruva.txtvoice.core.ui.theme.YellowPrimary
-import com.dhruva.txtvoice.core.ui.theme.DarkGray
-import com.dhruva.txtvoice.core.ui.theme.DarkSurface
-import com.dhruva.txtvoice.core.ui.theme.LightGray
 import com.dhruva.txtvoice.core.ui.theme.TxtVoiceTheme
 
 @Composable
@@ -65,19 +60,19 @@ fun SettingsScreen(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(DarkBackground)
+            .background(MaterialTheme.colorScheme.background)
             .verticalScroll(scrollState)
             .padding(16.dp)
     ) {
         SettingsSectionHeader(
             icon = Icons.Default.AccessibilityNew,
             title = stringResource(R.string.accessibility_label),
-            color = YellowPrimary
+            color = MaterialTheme.colorScheme.primary
         )
 
         Card(
             modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
-            colors = CardDefaults.cardColors(containerColor = DarkSurface),
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
             shape = RoundedCornerShape(8.dp)
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
@@ -97,7 +92,7 @@ fun SettingsScreen(modifier: Modifier = Modifier) {
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(
                     text = stringResource(R.string.voice_selection_label),
-                    color = LightGray,
+                    color = MaterialTheme.colorScheme.onSurface,
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.Bold
                 )
@@ -111,12 +106,12 @@ fun SettingsScreen(modifier: Modifier = Modifier) {
         SettingsSectionHeader(
             icon = Icons.Default.Visibility,
             title = stringResource(R.string.display_feedback_label),
-            color = YellowPrimary
+            color = MaterialTheme.colorScheme.primary
         )
 
         Card(
             modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
-            colors = CardDefaults.cardColors(containerColor = DarkSurface),
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
             shape = RoundedCornerShape(8.dp)
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
@@ -188,16 +183,16 @@ fun SettingSliderItem(label: String, value: Float, valueLabel: String, onValueCh
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Text(text = label, color = LightGray, style = MaterialTheme.typography.bodyMedium)
-            Text(text = valueLabel, color = YellowPrimary, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Bold)
+            Text(text = label, color = MaterialTheme.colorScheme.onSurface, style = MaterialTheme.typography.bodyMedium)
+            Text(text = valueLabel, color = MaterialTheme.colorScheme.primary, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Bold)
         }
         Slider(
             value = value,
             onValueChange = onValueChange,
             colors = SliderDefaults.colors(
-                thumbColor = YellowPrimary,
-                activeTrackColor = YellowPrimary,
-                inactiveTrackColor = Color(0xFF24292F)
+                thumbColor = MaterialTheme.colorScheme.primary,
+                activeTrackColor = MaterialTheme.colorScheme.primary,
+                inactiveTrackColor = MaterialTheme.colorScheme.surfaceVariant
             )
         )
     }
@@ -207,8 +202,8 @@ fun SettingSliderItem(label: String, value: Float, valueLabel: String, onValueCh
 fun VoiceSelectionCard() {
     Card(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = Color(0xFF101217)),
-        border = BorderStroke(1.dp, Color(0xFF24292F)),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
         shape = RoundedCornerShape(8.dp)
     ) {
         Row(
@@ -217,10 +212,10 @@ fun VoiceSelectionCard() {
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Column {
-                Text(text = "Neutral Clarity", color = LightGray, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Bold)
-                Text(text = "Default System Voice", color = DarkGray, style = MaterialTheme.typography.labelSmall)
+                Text(text = "Neutral Clarity", color = MaterialTheme.colorScheme.onBackground, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Bold)
+                Text(text = "Default System Voice", color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.labelSmall)
             }
-            Icon(imageVector = Icons.Default.ArrowDropDown, contentDescription = null, tint = LightGray)
+            Icon(imageVector = Icons.Default.ArrowDropDown, contentDescription = null, tint = MaterialTheme.colorScheme.onBackground)
         }
     }
 }
@@ -233,18 +228,18 @@ fun SettingToggleItem(label: String, description: String, checked: Boolean, onCh
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Column(modifier = Modifier.weight(1f)) {
-            Text(text = label, color = LightGray, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Bold)
-            Text(text = description, color = DarkGray, style = MaterialTheme.typography.labelSmall)
+            Text(text = label, color = MaterialTheme.colorScheme.onSurface, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Bold)
+            Text(text = description, color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.labelSmall)
         }
         Switch(
             checked = checked,
             onCheckedChange = onCheckedChange,
             colors = SwitchDefaults.colors(
-                checkedThumbColor = Color.Black,
-                checkedTrackColor = YellowPrimary,
-                uncheckedThumbColor = Color.White,
-                uncheckedTrackColor = Color(0xFF24292F),
-                uncheckedBorderColor = Color.Transparent
+                checkedThumbColor = MaterialTheme.colorScheme.onPrimary,
+                checkedTrackColor = MaterialTheme.colorScheme.primary,
+                uncheckedThumbColor = MaterialTheme.colorScheme.surface,
+                uncheckedTrackColor = MaterialTheme.colorScheme.surfaceVariant,
+                uncheckedBorderColor = MaterialTheme.colorScheme.outline
             )
         )
     }
@@ -254,7 +249,7 @@ fun SettingToggleItem(label: String, description: String, checked: Boolean, onCh
 fun InfoSection(icon: ImageVector, title: String, description: String, color: Color) {
     Card(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = DarkSurface),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
         shape = RoundedCornerShape(8.dp)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
@@ -266,7 +261,7 @@ fun InfoSection(icon: ImageVector, title: String, description: String, color: Co
             Spacer(modifier = Modifier.height(12.dp))
             Text(
                 text = description,
-                color = DarkGray,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 style = MaterialTheme.typography.bodyMedium,
                 lineHeight = 20.sp
             )

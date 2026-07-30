@@ -4,6 +4,7 @@ plugins {
     alias (libs.plugins.hilt.android)
     alias (libs.plugins.ksp)
     alias(libs.plugins.jetbrains.kotlin.serialization)
+    alias(libs.plugins.google.oss.licenses)
 }
 
 android {
@@ -11,19 +12,41 @@ android {
     compileSdk = 37
 
     defaultConfig {
-        applicationId = "com.dhruva.lexivocal"
+        applicationId = "com.dhruva.txtvoice"
         minSdk = 24
         targetSdk = 37
-        versionCode = 1
+        versionCode = 2
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        create("release") {
+            // These will be populated from local.properties or environment variables
+            storeFile = file(project.findProperty("RELEASE_STORE_FILE") ?: "path/to/keystore.jks")
+            storePassword = project.findProperty("RELEASE_STORE_PASSWORD")?.toString()
+            keyAlias = project.findProperty("RELEASE_KEY_ALIAS")?.toString()
+            keyPassword = project.findProperty("RELEASE_KEY_PASSWORD")?.toString()
+        }
+    }
+
     buildTypes {
         release {
+            isMinifyEnabled = true
+            isShrinkResources = true
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "src/main/keepRules/rules.keep"
+            )
+            signingConfig = signingConfigs.getByName("release")
+
             optimization {
                 enable = false
+            }
+
+            ndk {
+                debugSymbolLevel = "FULL"
             }
         }
     }
@@ -59,6 +82,8 @@ dependencies {
     implementation(libs.kotlinx.serialization.core)
     //lottie animation
     implementation(libs.lottie.compose)
+    implementation(libs.play.services.oss.licenses)
+    implementation(libs.google.material)
 
     testImplementation(libs.junit)
     androidTestImplementation(platform(libs.androidx.compose.bom))

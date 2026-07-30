@@ -35,7 +35,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalLocale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -43,13 +42,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.dhruva.txtvoice.R
-import com.dhruva.txtvoice.core.ui.theme.DarkBackground
-import com.dhruva.txtvoice.core.ui.theme.DarkGray
-import com.dhruva.txtvoice.core.ui.theme.DarkSurface
-import com.dhruva.txtvoice.core.ui.theme.LightGray
 import com.dhruva.txtvoice.core.ui.theme.TxtVoiceTheme
-import com.dhruva.txtvoice.core.ui.theme.YellowBorder
-import com.dhruva.txtvoice.core.ui.theme.YellowPrimary
 
 @Composable
 fun HistoryScreen(modifier: Modifier = Modifier) {
@@ -91,29 +84,29 @@ fun HistoryScreen(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(DarkBackground)
+            .background(MaterialTheme.colorScheme.background)
             .padding(16.dp)
     ) {
         OutlinedTextField(
             value = searchQuery,
             onValueChange = { searchQuery = it },
-            placeholder = { Text(stringResource(R.string.search_placeholder), color = DarkGray) },
+            placeholder = { Text(stringResource(R.string.search_placeholder), color = MaterialTheme.colorScheme.onSurfaceVariant) },
             leadingIcon = {
                 Icon(
                     imageVector = Icons.Default.Search,
                     contentDescription = null,
-                    tint = DarkGray
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(56.dp),
             colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = LightGray,
-                unfocusedBorderColor = YellowBorder,
-                focusedTextColor = LightGray,
-                unfocusedTextColor = LightGray,
-                cursorColor = YellowPrimary
+                focusedBorderColor = MaterialTheme.colorScheme.primary,
+                unfocusedBorderColor = MaterialTheme.colorScheme.outline,
+                focusedTextColor = MaterialTheme.colorScheme.onBackground,
+                unfocusedTextColor = MaterialTheme.colorScheme.onBackground,
+                cursorColor = MaterialTheme.colorScheme.primary
             ),
             shape = RoundedCornerShape(4.dp)
         )
@@ -128,8 +121,8 @@ fun HistoryScreen(modifier: Modifier = Modifier) {
                     onClick = { selectedFilter = filter },
                     label = { Text(filter) },
                     colors = AssistChipDefaults.assistChipColors(
-                        containerColor = if (isSelected) YellowPrimary else DarkSurface,
-                        labelColor = if (isSelected) Color.Black else LightGray
+                        containerColor = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceVariant,
+                        labelColor = if (isSelected) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant
                     ),
                     border = null,
                     shape = RoundedCornerShape(16.dp)
@@ -144,7 +137,7 @@ fun HistoryScreen(modifier: Modifier = Modifier) {
                 if (item.date != null) {
                     Text(
                         text = item.date.uppercase(LocalLocale.current.platformLocale),
-                        color = DarkGray,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         style = MaterialTheme.typography.labelMedium,
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.padding(top = 8.dp, bottom = 4.dp)
@@ -172,7 +165,7 @@ data class HistoryItem(
 fun HistoryCard(item: HistoryItem) {
     Card(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = DarkSurface),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
         shape = RoundedCornerShape(8.dp)
     ) {
         Column(
@@ -186,7 +179,7 @@ fun HistoryCard(item: HistoryItem) {
                 TypeTag(item.type)
                 Text(
                     text = item.timestamp,
-                    color = DarkGray,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     style = MaterialTheme.typography.labelSmall,
                     fontWeight = FontWeight.Bold
                 )
@@ -194,7 +187,7 @@ fun HistoryCard(item: HistoryItem) {
             Spacer(modifier = Modifier.height(12.dp))
             Text(
                 text = item.text,
-                color = LightGray,
+                color = MaterialTheme.colorScheme.onSurface,
                 style = MaterialTheme.typography.bodyMedium,
                 lineHeight = 20.sp
             )
@@ -204,8 +197,8 @@ fun HistoryCard(item: HistoryItem) {
 
 @Composable
 fun TypeTag(type: HistoryType) {
-    val containerColor = if (type == HistoryType.SPOKEN) Color(0xFF2D2A10) else Color(0xFF1B232C)
-    val contentColor = if (type == HistoryType.SPOKEN) YellowPrimary else Color(0xFF8BA2B5)
+    val containerColor = if (type == HistoryType.SPOKEN) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.secondaryContainer
+    val contentColor = if (type == HistoryType.SPOKEN) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSecondaryContainer
     val icon = if (type == HistoryType.SPOKEN) Icons.Default.RecordVoiceOver else Icons.Default.Hearing
     val label = if (type == HistoryType.SPOKEN) stringResource(R.string.spoken_label) else stringResource(R.string.transcribed_label)
 

@@ -35,6 +35,12 @@ data object SpeakRoute : TxtVoiceNavigationKeys {
     override val label: Int = R.string.speak_label
 }
 
+@Serializable
+data object InfoRoute : TxtVoiceNavigationKeys {
+    override val icon: Int = R.drawable.info
+    override val label: Int = R.string.app_info_label
+}
+
 //@Serializable
 //data object HistoryRoute : TxtVoiceNavigationKeys {
 //    override val icon: Int = R.drawable.history

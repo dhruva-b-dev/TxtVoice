@@ -24,7 +24,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.saveable.rememberSerializable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -32,8 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.ui.NavDisplay
-import com.dhruva.txtvoice.core.ui.theme.DarkBackground
-import com.dhruva.txtvoice.core.ui.theme.DarkSurfaceVariant
+import com.dhruva.txtvoice.features.info.InfoScreen
 import com.dhruva.txtvoice.features.speak.SpeakScreen
 import com.dhruva.txtvoice.features.transcribe.HomeTranscribeScreen
 import kotlinx.serialization.serializer
@@ -51,7 +49,7 @@ fun TextVoiceAppNavigation(modifier: Modifier = Modifier) {
     val currentDestination = backStack.lastOrNull() ?: HomeTranscribeRoute
 
     Scaffold(
-        modifier = modifier.background(color = DarkBackground),
+        modifier = modifier.background(color = MaterialTheme.colorScheme.background),
         topBar = {
             TxtVoiceHeader(
                 currentDestination = currentDestination,
@@ -71,7 +69,7 @@ fun TxtVoiceNavDisplay(
     backStack: NavBackStack<TxtVoiceNavigationKeys>
 ) {
     NavDisplay(
-        modifier = modifier.background(color = DarkBackground),
+        modifier = modifier.background(color = MaterialTheme.colorScheme.background),
         backStack = backStack,
         onBack = { backStack.removeLastOrNull() },
         entryProvider = { key ->
@@ -86,6 +84,10 @@ fun TxtVoiceNavDisplay(
 
                 SpeakRoute -> NavEntry(key) {
                     SpeakScreen()
+                }
+
+                InfoRoute -> NavEntry(key) {
+                    InfoScreen()
                 }
 
 //                HistoryRoute -> NavEntry(key) {
@@ -104,13 +106,14 @@ fun TxtVoiceBottomBar(
     val routes = listOf(
         HomeTranscribeRoute,
         SpeakRoute,
+        InfoRoute,
 //        HistoryRoute,
 //        SettingsRoute
     )
 
     NavigationBar(
         modifier = modifier,
-        containerColor = DarkSurfaceVariant,//DarkBackground,
+        containerColor = MaterialTheme.colorScheme.surfaceVariant,
         windowInsets = NavigationBarDefaults.windowInsets
     ) {
         routes.forEach { destination ->
@@ -133,11 +136,11 @@ fun TxtVoiceBottomBar(
                 },
                 label = { Text(text = stringResource(destination.label)) },
                 colors = NavigationBarItemDefaults.colors(
-                    selectedIconColor = Color.Black,
-                    selectedTextColor = MaterialTheme.colorScheme.primary,
+                    selectedIconColor = MaterialTheme.colorScheme.onPrimary,
+                    selectedTextColor = MaterialTheme.colorScheme.onPrimary,
                     indicatorColor = MaterialTheme.colorScheme.primary,
-                    unselectedIconColor = Color.White,
-                    unselectedTextColor = Color.White
+                    unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                    unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             )
         }

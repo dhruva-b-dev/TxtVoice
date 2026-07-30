@@ -4,17 +4,18 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.VolumeUp
 import androidx.compose.material.icons.filled.Cancel
@@ -36,6 +37,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -49,21 +51,15 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.dhruva.txtvoice.R
 import com.dhruva.txtvoice.core.ui.components.CommonYellowButton
-import com.dhruva.txtvoice.core.ui.theme.DarkBackground
-import com.dhruva.txtvoice.core.ui.theme.DarkGray
-import com.dhruva.txtvoice.core.ui.theme.DarkSurface
-import com.dhruva.txtvoice.core.ui.theme.LightGray
 import com.dhruva.txtvoice.core.ui.theme.TxtVoiceTheme
-import com.dhruva.txtvoice.core.ui.theme.YellowBorder
-import com.dhruva.txtvoice.core.ui.theme.YellowPrimary
 
 @Composable
 fun SpeakScreen(
     modifier: Modifier = Modifier,
     viewModel: SpeakViewModel = hiltViewModel()
 ) {
-    var textToSpeak by remember { mutableStateOf("") }
-    var highlightedLabel by remember { mutableStateOf("") }
+    var textToSpeak by rememberSaveable { mutableStateOf("") }
+    var highlightedLabel by rememberSaveable { mutableStateOf("") }
 
     val quickPhrases = listOf(
         QuickPhraseItem(stringResource(R.string.hello_label), Icons.Filled.WavingHand),
@@ -77,12 +73,13 @@ fun SpeakScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(DarkBackground)
+            .background(MaterialTheme.colorScheme.background)
+            .verticalScroll(rememberScrollState())
             .padding(16.dp)
     ) {
         Text(
             text = stringResource(R.string.type_to_speak_label).uppercase(LocalLocale.current.platformLocale),
-            color = DarkGray,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
             style = MaterialTheme.typography.labelMedium,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(bottom = 8.dp)
@@ -91,27 +88,30 @@ fun SpeakScreen(
         OutlinedTextField(
             value = textToSpeak,
             onValueChange = { textToSpeak = it },
-            placeholder = { Text(stringResource(R.string.type_placeholder), color = DarkGray) },
+            placeholder = { Text(stringResource(R.string.type_placeholder), color = MaterialTheme.colorScheme.onSurfaceVariant) },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(150.dp),
             trailingIcon = {
                 if (textToSpeak.isNotEmpty()) {
-                    IconButton(onClick = { textToSpeak = "" }) {
+                    IconButton(onClick = {
+                        textToSpeak = ""
+                        viewModel.stopSpeaking()
+                    }) {
                         Icon(
                             imageVector = Icons.Filled.Clear,
                             contentDescription = stringResource(R.string.clear_label),
-                            tint = DarkGray
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
                 }
             },
             colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = LightGray,
-                unfocusedBorderColor = YellowBorder,
-                focusedTextColor = LightGray,
-                unfocusedTextColor = LightGray,
-                cursorColor = YellowPrimary
+                focusedBorderColor = MaterialTheme.colorScheme.primary,
+                unfocusedBorderColor = MaterialTheme.colorScheme.outline,
+                focusedTextColor = MaterialTheme.colorScheme.onBackground,
+                unfocusedTextColor = MaterialTheme.colorScheme.onBackground,
+                cursorColor = MaterialTheme.colorScheme.primary
             ),
             shape = RoundedCornerShape(4.dp)
         )
@@ -130,29 +130,37 @@ fun SpeakScreen(
 
         Text(
             text = stringResource(R.string.quick_phrases_label).uppercase(LocalLocale.current.platformLocale),
-            color = DarkGray,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
             style = MaterialTheme.typography.labelMedium,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(bottom = 8.dp)
         )
 
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(2),
-            contentPadding = PaddingValues(bottom = 16.dp),
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
-            modifier = Modifier.weight(1f)
-        ) {
-            items(quickPhrases) { phrase ->
-                val isHighlighted = highlightedLabel == phrase.label
-                QuickPhraseCard(
-                    phrase = phrase,
-                    isHighlighted = isHighlighted,
-                    onClick = {
-                        highlightedLabel = phrase.label
-                        viewModel.speak(phrase.label)
+        // Manual Grid for better scrolling resilience
+        quickPhrases.chunked(2).forEach { rowPhrases ->
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 6.dp),
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                rowPhrases.forEach { phrase ->
+                    val isHighlighted = highlightedLabel == phrase.label
+                    Box(modifier = Modifier.weight(1f)) {
+                        QuickPhraseCard(
+                            phrase = phrase,
+                            isHighlighted = isHighlighted,
+                            onClick = {
+                                highlightedLabel = phrase.label
+                                viewModel.speak(phrase.label)
+                            }
+                        )
                     }
-                )
+                }
+                // If the last row only has one item, add a spacer to maintain alignment
+                if (rowPhrases.size == 1) {
+                    Spacer(modifier = Modifier.weight(1f))
+                }
             }
         }
     }
@@ -169,9 +177,9 @@ fun QuickPhraseCard(
     isHighlighted: Boolean,
     onClick: () -> Unit
 ) {
-    val borderColor = if (isHighlighted) Color(0xFFFFB4AB) else Color.Transparent
-    val labelColor = if (isHighlighted) Color(0xFFFFB4AB) else LightGray
-    val iconColor = if (isHighlighted) Color(0xFFFFB4AB) else LightGray
+    val borderColor = if (isHighlighted) MaterialTheme.colorScheme.primary else Color.Transparent
+    val labelColor = if (isHighlighted) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
+    val iconColor = if (isHighlighted) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
 
     Card(
         modifier = Modifier
@@ -184,7 +192,7 @@ fun QuickPhraseCard(
             )
             .clickable { onClick() },
         colors = CardDefaults.cardColors(
-            containerColor = DarkSurface
+            containerColor = MaterialTheme.colorScheme.surfaceVariant
         ),
         shape = RoundedCornerShape(8.dp)
     ) {

@@ -4,6 +4,27 @@
 # For more details, see
 #   https://d.android.com/r/tools/r8/keep-rules
 
+# Kotlin Serialization
+-keepattributes *Annotation*, EnclosingMethod, InnerClasses, Signature
+-keepclassmembers class ** {
+    @kotlinx.serialization.Serializable *;
+}
+-keepclassmembers class ** {
+    @kotlinx.serialization.Transient *;
+}
+# Keep the Serializer logic
+-keepclassmembers class * {
+    *** Companion;
+    *** $serializer;
+}
+
+# Lottie
+-keep class com.airbnb.lottie.** { *; }
+
+# Hilt (usually handled by the plugin, but added for safety)
+-keep class dagger.hilt.** { *; }
+-keep class com.dhruva.txtvoice.TxtVoiceApplication_HiltComponents** { *; }
+
 # If your project uses WebView with JS, uncomment the following
 # and specify the fully qualified class name to the JavaScript interface
 # class:

@@ -12,14 +12,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.dhruva.txtvoice.core.ui.theme.Mustard
-import com.dhruva.txtvoice.core.ui.theme.Typography
-import com.dhruva.txtvoice.core.ui.theme.YellowPrimary
-
 @Composable
 fun CommonYellowButton(
     leadingIcon: ImageVector,
@@ -32,7 +28,8 @@ fun CommonYellowButton(
         onClick = { onButtonClick() },
         shape = RoundedCornerShape(8.dp),
         colors = ButtonDefaults.buttonColors(
-            containerColor = YellowPrimary,
+            containerColor = MaterialTheme.colorScheme.primary,
+            contentColor = MaterialTheme.colorScheme.onPrimary
         )
     ) {
         Icon(
@@ -40,18 +37,17 @@ fun CommonYellowButton(
             contentDescription = stringResource(text),
             modifier = Modifier.size(18.dp)
         )
-        Spacer(modifier = Modifier.size(8.dp)) // Adds gap between icon and text
+        Spacer(modifier = Modifier.size(8.dp))
         Text(
             text = stringResource(text),
-            color = Mustard,
-            style = Typography.bodyLarge
+            style = MaterialTheme.typography.bodyLarge
         )
     }
 }
 
 
 @Composable
-fun CommonBlackButton(
+fun CommonSecondaryButton(
     leadingIcon: ImageVector,
     @StringRes text: Int,
     onButtonClick: () -> Unit,
@@ -61,22 +57,21 @@ fun CommonBlackButton(
         modifier = modifier.padding(4.dp),
         onClick = { onButtonClick() },
         colors = ButtonDefaults.buttonColors(
-            containerColor = Color.Black,
+            containerColor = MaterialTheme.colorScheme.surface,
+            contentColor = MaterialTheme.colorScheme.onSurface
         ),
         shape = RoundedCornerShape(8.dp),
-        border = BorderStroke(2.dp, Color.White)
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline)
     ) {
         Icon(
             imageVector = leadingIcon,
             contentDescription = stringResource(text),
-            modifier = Modifier.size(18.dp),
-            tint = Color.White
+            modifier = Modifier.size(18.dp)
         )
-        Spacer(modifier = Modifier.size(8.dp)) // Adds gap between icon and text
+        Spacer(modifier = Modifier.size(8.dp))
         Text(
             text = stringResource(text),
-            color = Color.White,
-            style = Typography.bodyLarge
+            style = MaterialTheme.typography.bodyLarge
         )
     }
 }

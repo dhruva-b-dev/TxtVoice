@@ -22,6 +22,7 @@ class TranscribeViewModel @Inject constructor(
     }
 
     fun clearText() {
+        voiceManager.stopListening()
         voiceManager.clearText()
     }
 }

@@ -15,4 +15,8 @@ class SpeakViewModel @Inject constructor(
             voiceManager.speak(text)
         }
     }
+
+    fun stopSpeaking() {
+        voiceManager.stopSpeaking()
+    }
 }

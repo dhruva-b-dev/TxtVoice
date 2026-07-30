@@ -36,4 +36,27 @@
     <string name="high_fidelity_label">High Fidelity</string>
     <string name="high_fidelity_desc">Our engine uses advanced neural processing to capture every nuance and tone of the voice, providing industry-leading clarity for both transcription and speech.</string>
     <string name="transcribe_default_val">Welcome to TxtVoice.\nPlease start speaking to begin the transcription.</string>
+    <string name="app_info_label">App Info</string>
+    <string name="about_label">About</string>
+    <string name="about_description">TxtVoice is an Android application that provides Speech-to-Text and Text-to-Speech functionality using Android\'s native speech APIs. Designed with accessibility at its core, it enables seamless communication through visual and vocal interfaces.</string>
+    <string name="developer_label">DEVELOPER</string>
+    <string name="developer_name">Dhruva Bhatt</string>
+    <string name="privacy_policy_label">Privacy Policy</string>
+    <string name="open_source_licenses_label">Open Source Licenses</string>
+    <string name="github_repository_label">GitHub Repository</string>
+    <string name="version_format">VERSION %1$s</string>
+    <string name="copyright_label">© 2026 Dhruva Bhatt</string>
+    <string name="app_tagline">Seamless Speech &amp; Voice Communication</string>
+    <string name="permission_rationale_title">Microphone Permission</string>
+    <string name="permission_rationale_message">TxtVoice needs access to your microphone to transcribe your speech into text. This is a core feature of the app.</string>
+    <string name="permission_permanent_denial_title">Permission Required</string>
+    <string name="permission_permanent_denial_message">Microphone permission has been permanently denied. Please enable it in the app settings to use speech features.</string>
+    <string name="open_settings_label">Open Settings</string>
+    <string name="cancel_button_label">Cancel</string>
+    <string name="ok_button_label">OK</string>
+    <string name="privacy_policy_title">Privacy Policy</string>
+    <string name="privacy_policy_content"><b>TxtVoice Privacy Policy</b>\n\n<b>1. Introduction</b>\nWe take your privacy seriously. This policy explains how TxtVoice handles your data.\n\n<b>2. Microphone Usage</b>\nWe access your microphone ONLY to provide Speech-to-Text services while the app is active.\n\n<b>3. Data Storage</b>\nWe do not store, record, or upload your audio data to any of our servers. All voice processing is done locally on your device or via Google\'s secure speech APIs.\n\n<b>4. Third-Party Services</b>\nWe use Google Play Services for speech recognition and text-to-speech synthesis. Please refer to Google\'s privacy policy for how they handle data.\n\n<b>5. No Data Sharing</b>\nWe do not sell or share any personal information with third parties.\n\n<b>6. Contact</b>\nIf you have any questions, contact us at dhruva.bhatt.dev@gmail.com.</string>
+    <string name="email_support_label">Email Support</string>
+    <string name="contact_developer_label">Contact Developer</string>
+    <string name="coming_soon_label">Coming Soon</string>
 </resources>

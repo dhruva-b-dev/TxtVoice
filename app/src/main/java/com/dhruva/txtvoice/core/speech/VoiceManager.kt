@@ -2,6 +2,7 @@ package com.dhruva.txtvoice.core.speech
 
 import android.content.Context
 import android.content.Intent
+import android.media.AudioManager
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -33,6 +34,8 @@ class VoiceManager @Inject constructor(
     private val _isListening = MutableStateFlow(false)
     val isListening: StateFlow<Boolean> = _isListening.asStateFlow()
 
+    private val audioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+
     // Keep track of previously finalized text to prevent duplication
     private var finalizedText = ""
     private val mainHandler = Handler(Looper.getMainLooper())
@@ -51,9 +54,33 @@ class VoiceManager @Inject constructor(
             putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
             putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true)
             putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, context.packageName)
-            // Some devices work better with these for continuous listening
-            putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS, 1000L)
-            putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_POSSIBLY_COMPLETE_SILENCE_LENGTH_MILLIS, 1000L)
+
+            // Attempt to keep the session segmented for continuous listening
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                putExtra("android.speech.extra.SEGMENTED_SESSION", true)
+            }
+            
+            // Prefer on-device for speed and reliability
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                putExtra(RecognizerIntent.EXTRA_PREFER_OFFLINE, true)
+            }
+
+            // Fine-tune silence detection to keep the session alive longer
+            putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS, 5000L)
+            putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_POSSIBLY_COMPLETE_SILENCE_LENGTH_MILLIS, 5000L)
+            putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_MINIMUM_LENGTH_MILLIS, 1500L)
+        }
+    }
+
+    private fun toggleMute(mute: Boolean) {
+        try {
+            val direction = if (mute) AudioManager.ADJUST_MUTE else AudioManager.ADJUST_UNMUTE
+            audioManager.adjustStreamVolume(AudioManager.STREAM_NOTIFICATION, direction, 0)
+            audioManager.adjustStreamVolume(AudioManager.STREAM_ALARM, direction, 0)
+            audioManager.adjustStreamVolume(AudioManager.STREAM_SYSTEM, direction, 0)
+            audioManager.adjustStreamVolume(AudioManager.STREAM_RING, direction, 0)
+        } catch (e: Exception) {
+            Log.e("VoiceManager", "Error toggling mute: ${e.message}")
         }
     }
 
@@ -65,17 +92,25 @@ class VoiceManager @Inject constructor(
 
         _isListening.value = true
         resetRecognizer()
+        toggleMute(true)
         speechRecognizer?.startListening(getRecognizerIntent())
     }
 
     private fun resetRecognizer() {
-        speechRecognizer?.destroy()
-        speechRecognizer = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            SpeechRecognizer.createOnDeviceSpeechRecognizer(context)
-        } else {
-            SpeechRecognizer.createSpeechRecognizer(context)
+        if (speechRecognizer == null) {
+            speechRecognizer = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                SpeechRecognizer.createOnDeviceSpeechRecognizer(context)
+            } else {
+                SpeechRecognizer.createSpeechRecognizer(context)
+            }
+            speechRecognizer?.setRecognitionListener(this)
         }
-        speechRecognizer?.setRecognitionListener(this)
+    }
+
+    private fun forceResetRecognizer() {
+        speechRecognizer?.destroy()
+        speechRecognizer = null
+        resetRecognizer()
     }
 
     fun stopListening() {
@@ -88,21 +123,23 @@ class VoiceManager @Inject constructor(
         tts?.speak(text, TextToSpeech.QUEUE_FLUSH, null, null)
     }
 
+    fun stopSpeaking() {
+        tts?.stop()
+    }
+
     fun clearText() {
         finalizedText = ""
         _transcribedText.value = ""
     }
 
     override fun onReadyForSpeech(params: Bundle?) {
-        Log.d("VoiceManager", "onReadyForSpeech")
+        toggleMute(false)
     }
     override fun onBeginningOfSpeech() {
-        Log.d("VoiceManager", "onBeginningOfSpeech")
     }
     override fun onRmsChanged(rmsdB: Float) {}
     override fun onBufferReceived(buffer: ByteArray?) {}
     override fun onEndOfSpeech() {
-        Log.d("VoiceManager", "onEndOfSpeech")
         // Don't set _isListening to false here to allow continuous recognition
     }
 
@@ -122,13 +159,24 @@ class VoiceManager @Inject constructor(
         Log.e("VoiceManager", "Speech recognition error: $errorMessage")
         
         if (_isListening.value) {
-            // Restart if it's a timeout or no match, which happens often in continuous mode
+            // Immediate restart for common non-critical issues
+            val delay = when (error) {
+                SpeechRecognizer.ERROR_SPEECH_TIMEOUT, 
+                SpeechRecognizer.ERROR_NO_MATCH -> 0L
+                else -> 500L
+            }
+            
             mainHandler.postDelayed({
                 if (_isListening.value) {
-                    resetRecognizer()
+                    if (error == SpeechRecognizer.ERROR_RECOGNIZER_BUSY) {
+                        forceResetRecognizer()
+                    } else {
+                        resetRecognizer()
+                    }
+                    toggleMute(true)
                     speechRecognizer?.startListening(getRecognizerIntent())
                 }
-            }, 500)
+            }, delay)
         }
     }
 
@@ -144,6 +192,7 @@ class VoiceManager @Inject constructor(
             // Restart recognizer for continuous listening
             mainHandler.post {
                 if (_isListening.value) {
+                    toggleMute(true)
                     speechRecognizer?.startListening(getRecognizerIntent())
                 }
             }
