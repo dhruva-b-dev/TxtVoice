@@ -1,6 +1,6 @@
 # TxtVoice
 
-TxtVoice is an Android accessibility and communication application that provides real-time Speech-to-Text transcription and Text-to-Speech conversion using Android's native speech APIs. Built with Kotlin, Jetpack Compose, MVVM, Hilt, and Material 3.
+TxtVoice is an Android accessibility and communication application that provides real-time Speech-to-Text transcription and Text-to-Speech conversion using Android's native speech APIs. Built with Kotlin, Jetpack Compose, MVVM, Hilt, and Material 3 and Stitch for UI/UX.
 
 ![Android](https://img.shields.io/badge/Android-24%2B-green)
 ![Kotlin](https://img.shields.io/badge/Kotlin-blue)
@@ -226,6 +226,7 @@ com.dhruva.txtvoice
 | Speech Recognition | Android SpeechRecognizer API |
 | Voice Output | Android TextToSpeech API |
 | Navigation | Navigation Compose |
+| UI/UX | Stitch |
 
 ---
 
