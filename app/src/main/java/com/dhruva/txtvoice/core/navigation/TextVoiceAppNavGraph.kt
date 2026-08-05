@@ -32,32 +32,42 @@ import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.ui.NavDisplay
 import com.dhruva.txtvoice.features.info.InfoScreen
+import com.dhruva.txtvoice.features.onboarding.OnboardingScreen
 import com.dhruva.txtvoice.features.speak.SpeakScreen
 import com.dhruva.txtvoice.features.transcribe.HomeTranscribeScreen
 import kotlinx.serialization.serializer
 
 @Composable
-fun rememberMyAppNavBackStack(vararg elements: TxtVoiceNavigationKeys): NavBackStack<TxtVoiceNavigationKeys> {
+fun rememberMyAppNavBackStack(startDestination: TxtVoiceNavigationKeys): NavBackStack<TxtVoiceNavigationKeys> {
     return rememberSerializable(serializer = serializer()) {
-        NavBackStack(*elements)
+        NavBackStack(startDestination)
     }
 }
 
 @Composable
-fun TextVoiceAppNavigation(modifier: Modifier = Modifier) {
-    val backStack = rememberMyAppNavBackStack(HomeTranscribeRoute)
-    val currentDestination = backStack.lastOrNull() ?: HomeTranscribeRoute
+fun TextVoiceAppNavigation(
+    modifier: Modifier = Modifier,
+    startDestination: TxtVoiceNavigationKeys = HomeTranscribeRoute
+) {
+    val backStack = rememberMyAppNavBackStack(startDestination)
+    val currentDestination = backStack.lastOrNull() ?: startDestination
 
     Scaffold(
         modifier = modifier.background(color = MaterialTheme.colorScheme.background),
         topBar = {
-            TxtVoiceHeader(
-                currentDestination = currentDestination,
-                canNavigateBack = backStack.size > 1,
-                onBackClick = { backStack.removeLastOrNull() }
-            )
+            if (currentDestination != OnboardingRoute) {
+                TxtVoiceHeader(
+                    currentDestination = currentDestination,
+                    canNavigateBack = backStack.size > 1,
+                    onBackClick = { backStack.removeLastOrNull() }
+                )
+            }
         },
-        bottomBar = { TxtVoiceBottomBar(backStack = backStack) }
+        bottomBar = {
+            if (currentDestination != OnboardingRoute) {
+                TxtVoiceBottomBar(backStack = backStack)
+            }
+        }
     ) { innerPadding ->
         TxtVoiceNavDisplay(Modifier.padding(innerPadding), backStack)
     }
@@ -74,6 +84,13 @@ fun TxtVoiceNavDisplay(
         onBack = { backStack.removeLastOrNull() },
         entryProvider = { key ->
             when (key) {
+                OnboardingRoute -> NavEntry(key) {
+                    OnboardingScreen(onFinish = {
+                        backStack.clear()
+                        backStack.add(HomeTranscribeRoute)
+                    })
+                }
+
                 HomeTranscribeRoute -> NavEntry(key) {
                     HomeTranscribeScreen()
                 }

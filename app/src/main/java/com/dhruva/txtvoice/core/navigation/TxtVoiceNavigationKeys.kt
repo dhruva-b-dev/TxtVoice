@@ -18,6 +18,12 @@ sealed interface TxtVoiceNavigationKeys : NavKey {
 }
 
 @Serializable
+data object OnboardingRoute : TxtVoiceNavigationKeys {
+    override val icon: Int = R.drawable.info // Placeholder icon
+    override val label: Int = R.string.onboarding_welcome_title
+}
+
+@Serializable
 data object HomeTranscribeRoute : TxtVoiceNavigationKeys {
     override val icon: Int = R.drawable.transcribe
     override val label: Int = R.string.transcribe_label

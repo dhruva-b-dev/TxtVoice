@@ -59,4 +59,25 @@
     <string name="email_support_label">Email Support</string>
     <string name="contact_developer_label">Contact Developer</string>
     <string name="coming_soon_label">Coming Soon</string>
+
+    <!-- Onboarding Strings -->
+    <string name="onboarding_welcome_title">Welcome to TxtVoice</string>
+    <string name="onboarding_welcome_desc">Your essential companion for seamless, real-time communication. Let\'s get you started.</string>
+    <string name="onboarding_transcribe_title">Live Transcribe</string>
+    <string name="onboarding_transcribe_desc">Convert spoken words into clear, readable text instantly. Perfect for following conversations or lectures.</string>
+    <string name="onboarding_speak_title">Quick Speak</string>
+    <string name="onboarding_speak_desc">Type your message or use pre-set phrases to speak your thoughts aloud using high-quality synthesis.</string>
+    <string name="onboarding_privacy_title">Privacy First</string>
+    <string name="onboarding_privacy_desc">Your voice data is processed locally on your device and is never stored on our servers.</string>
+    <string name="onboarding_skip">Skip</string>
+    <string name="onboarding_next">Next</string>
+    <string name="onboarding_get_started">Get Started</string>
+
+    <!-- Rating Strings -->
+    <string name="rate_app_label">Rate TxtVoice</string>
+    <string name="rating_dialog_title">Enjoying TxtVoice?</string>
+    <string name="rating_dialog_message">Your feedback helps us improve the app for everyone. Would you like to leave a review on the Play Store?</string>
+    <string name="rating_dialog_rate_now">Rate Now</string>
+    <string name="rating_dialog_later">Later</string>
+    <string name="rating_dialog_never">Don\'t Show Again</string>
 </resources>

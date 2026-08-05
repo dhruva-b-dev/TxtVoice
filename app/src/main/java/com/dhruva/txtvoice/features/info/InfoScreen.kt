@@ -26,6 +26,7 @@ import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Launch
 import androidx.compose.material.icons.filled.Shield
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.Terminal
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
@@ -182,6 +183,25 @@ fun InfoScreen(modifier: Modifier = Modifier) {
             icon = Icons.Default.Shield,
             label = stringResource(id = R.string.privacy_policy_label),
             onClick = { showPrivacyPolicy = true }
+        )
+        ActionItem(
+            icon = Icons.Default.Star,
+            label = stringResource(id = R.string.rate_app_label),
+            onClick = {
+                val intent = Intent(Intent.ACTION_VIEW).apply {
+                    data = Uri.parse("market://details?id=${context.packageName}")
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                }
+                try {
+                    context.startActivity(intent)
+                } catch (e: Exception) {
+                    // Fallback to browser
+                    val browserIntent = Intent(Intent.ACTION_VIEW).apply {
+                        data = Uri.parse("https://play.google.com/store/apps/details?id=${context.packageName}")
+                    }
+                    context.startActivity(browserIntent)
+                }
+            }
         )
         ActionItem(
             icon = Icons.Default.Terminal,
